@@ -178,21 +178,21 @@ void OLED_init (){
                     
                     //Enhance Driving Scheme Capability 
                     w_cmd (0xB2);
-                    w_cmd (0xA4);
-                    w_cmd (0x00);
-                    w_cmd (0x00);
+                    w_data (0xA4);
+                    w_data (0x00);
+                    w_data (0x00);
                     
                     //Set Pre-Charge Voltage 
                     w_cmd (0xBB);
-                    w_cmd (0x17);
+                    w_data (0x17);
                     
                     //Set Second Pre-Charge Period 
                     w_cmd (0xB6);
-                    w_cmd (0x01);
+                    w_data (0x01);
                     
                     //Set VCOMH Voltage 
                     w_cmd (0xBE);
-                    w_cmd (0x05);
+                    w_data (0x05);
                     
                     //Set Display Mode 
                     w_cmd (0xA6);
