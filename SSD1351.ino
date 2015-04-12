@@ -50,48 +50,48 @@ void OLED_init (){
                   
                     //Command Lock 
                     w_cmd (0xFD);
-                    w_cmd (0x12);
+                    w_data (0x12);
                     
                     //Command Lock 
                     w_cmd (0xFD);
-                    w_cmd (0xB1);
+                    w_data (0xB1);
                     
                     //Set Sleep Mode On 
                     w_cmd (0xAE);
                     
                     //Set Display Clock Divide Ratio/Oscillator Frequency 
                     w_cmd (0xB3);
-                    w_cmd (0xF1);
+                    w_data (0xF1);
                     
                     //Set Multiplex Ratio 
                     w_cmd (0xCA);
-                    w_cmd (0x7F);
+                    w_data (0x7F);
                     
                     //Set Display Offset 
                     w_cmd (0xA2);
-                    w_cmd (0x00);
+                    w_data (0x00);
                     
                     //Set Display Start Line 
                     w_cmd (0xA1);
-                    w_cmd (0x00);
+                    w_data (0x00);
                     
                     //Set Re-Map & Color Depth 
                     w_cmd (0xA0);
-                    w_cmd (0xB4);
+                    w_data (0xB4);
                     
                     //Set GPIO 
                     w_cmd (0xB5);
-                    w_cmd (0x00);
+                    w_data (0x00);
                     
                     
                     //Function Selection 
                     w_cmd (0xAB);
-                    w_cmd (0x01);
+                    w_data (0x01);
                     
                     //Set Segment Low Voltage 
                     w_cmd (0xB4);
-                    w_cmd (0xA0);
-                    w_cmd (0xB5);
+                    w_data (0xA0);
+                    w_data (0xB5);
                     w_cmd (0x55);
                     
                     //Set Contrast Current 
