@@ -25,14 +25,22 @@
 void OLED_init ();
 void w_cmd (uint8_t c);
 void w_data (uint8_t d);
-
+void fill_ram (uint8_t h, uint8_t l);
 //=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=
 
-void setup () {OLED_init ();}
-void loop () {while (1) {}}
+void setup () {OLED_init ();int color = 0;}
+void loop () {
+
+uint8_t ch = (color >> 8) & 0x00FF;
+uint8_t ch = color & 0x00FF;
+fill_ram (ch, cl);
+delay (100);
+if (color == 0xFFFF) color = 0;
+else color++;
+}
 
 //=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=
-//    OLED_init
+//                 OLED_init
 //=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=
 
 void OLED_init (){
@@ -200,6 +208,7 @@ void OLED_init (){
                     w_cmd (0xA6);
                     
                     //Clear Screen 
+                    fill_ram (0x00, 0x00);
                     
                     //Set Sleep Mode Off 
                     w_cmd (0xAF);
@@ -207,8 +216,10 @@ void OLED_init (){
 }
 
 //=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=
-
-void w_cmd (uint8_t c) {
+//
+//                   Write Data & Command
+//
+//=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=void w_cmd (uint8_t c) {
           digitalWrite (CS,LOW);
           digitalWrite (DC,LOW);
           shiftOut (SDIN, SCLK, MSBFIRST, c);
@@ -219,4 +230,35 @@ void w_data (uint8_t d) {
           digitalWrite (DC,HIGH);
           shiftOut (SDIN, SCLK, MSBFIRST, d);
           digitalWrite (CS,HIGH);
+}
+//=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=
+//
+//                 Fill Screen
+//                 
+//                 h ---------> High Byte Of Data
+//                 l ---------> Low Byte Of Data
+//
+//                 Data mode: 
+//                                    RRRRRGGG
+//                                    GGGBBBBB
+//
+//                 Mode Select With Command "0xA0"
+//
+//=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=
+void fill_ram (uint8_t h, uint8_t l) {
+int i, c;
+w_cmd (0x15);
+w_data (0x00);
+w_data (0x7F);
+
+w_cmd (0x75);
+w_data (0x00);
+w_data (0x7F);
+
+w_cmd (0x5C);
+
+for (i = 0; i < 128; i++) {
+for (c = 0; c < 128; c++) {w_data (h); w_data (l);}
+}
+
 }
