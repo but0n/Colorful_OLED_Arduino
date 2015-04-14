@@ -28,15 +28,15 @@ void w_data (uint8_t d);
 void fill_ram (uint8_t h, uint8_t l);
 //=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=
 
-void setup () {OLED_init ();int color = 0;}
+void setup () {OLED_init ();}
 void loop () {
-
-uint8_t ch = (color >> 8) & 0x00FF;
-uint8_t ch = color & 0x00FF;
-fill_ram (ch, cl);
-delay (100);
-if (color == 0xFFFF) color = 0;
-else color++;
+          int color;
+          for (color = 0xFFFF; color != 0; color--){
+                  uint8_t ch = (color >> 8) & 0x00FF;
+                  uint8_t cl = color & 0x00FF;
+                  fill_ram (ch, cl);
+                  delay (100);
+          }
 }
 
 //=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=
@@ -87,7 +87,7 @@ void OLED_init (){
                     
                     //Set Re-Map & Color Depth 
                     w_cmd (0xA0);
-                    w_data (0xB4);
+                    w_data (0x70);
                     
                     //Set GPIO 
                     w_cmd (0xB5);
@@ -219,7 +219,8 @@ void OLED_init (){
 //
 //                   Write Data & Command
 //
-//=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=void w_cmd (uint8_t c) {
+//=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=
+void w_cmd (uint8_t c) {
           digitalWrite (CS,LOW);
           digitalWrite (DC,LOW);
           shiftOut (SDIN, SCLK, MSBFIRST, c);
@@ -246,19 +247,22 @@ void w_data (uint8_t d) {
 //
 //=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=
 void fill_ram (uint8_t h, uint8_t l) {
-int i, c;
-w_cmd (0x15);
-w_data (0x00);
-w_data (0x7F);
-
-w_cmd (0x75);
-w_data (0x00);
-w_data (0x7F);
-
-w_cmd (0x5C);
-
-for (i = 0; i < 128; i++) {
-for (c = 0; c < 128; c++) {w_data (h); w_data (l);}
-}
+              int i, c;
+              w_cmd (0x15);
+              w_data (0x00);
+              w_data (0x7F);
+              
+              w_cmd (0x75);
+              w_data (0x00);
+              w_data (0x7F);
+              
+              w_cmd (0x5C);
+              
+              for (i = 0; i < 128; i++) {
+                      for (c = 0; c < 128; c++) {
+                                w_data (l); 
+                                w_data (h);
+                      }
+              }
 
 }
