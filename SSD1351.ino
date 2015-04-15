@@ -9,7 +9,7 @@
  * ------------->1.5' 128*128 (RGB)
  * ------------->Driver IC: SSD1351
  *
- * INTERFACE       : 4-wire SPI.
+ * INTERFACE :       4-wire SPI.
  * 
  * E-mail          :       but0n@freeattack.com
  * 
@@ -30,13 +30,7 @@ void fill_ram (uint8_t h, uint8_t l);
 
 void setup () {OLED_init ();}
 void loop () {
-          int color;
-          for (color = 0xFFFF; color != 0; color--){
-                  uint8_t ch = (color >> 8) & 0x00FF;
-                  uint8_t cl = color & 0x00FF;
-                  fill_ram (ch, cl);
-                  
-          }
+          fill_ram (0x00,0x1F);while (1) {}
 }
 
 //=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=_=
@@ -87,7 +81,7 @@ void OLED_init (){
                     
                     //Set Re-Map & Color Depth 
                     w_cmd (0xA0);
-                    w_data (0x70);
+                    w_data (0x74);
                     
                     //Set GPIO 
                     w_cmd (0xB5);
