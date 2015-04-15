@@ -35,7 +35,7 @@ void loop () {
                   uint8_t ch = (color >> 8) & 0x00FF;
                   uint8_t cl = color & 0x00FF;
                   fill_ram (ch, cl);
-                  delay (100);
+                  
           }
 }
 
@@ -260,8 +260,8 @@ void fill_ram (uint8_t h, uint8_t l) {
               
               for (i = 0; i < 128; i++) {
                       for (c = 0; c < 128; c++) {
-                                w_data (l); 
-                                w_data (h);
+                                w_data (h); 
+                                w_data (l);
                       }
               }
 
